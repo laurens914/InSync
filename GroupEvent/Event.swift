@@ -14,13 +14,15 @@ class Event
 {
     var eventName: String
     var eventDate: String
-   var recordId: CKRecordID
+    var recordId: CKRecordID
+    var id: String
     
-    init(eventName:String, eventDate: String, recordId: CKRecordID)
+    init(eventName:String, eventDate: String, recordId: CKRecordID, id: String = NSUUID().UUIDString)
     {
         self.eventName = eventName
         self.eventDate = eventDate
         self.recordId = recordId
+        self.id = id
     }
 
 }

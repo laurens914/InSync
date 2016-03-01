@@ -90,22 +90,31 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
         self.selectedItem = eventList[indexPath.row]
         performSegueWithIdentifier("TaskViewController", sender: nil)
     }
-    
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            if let publicDatabase = publicDatabase{
-                publicDatabase.deleteRecordWithID(eventList[indexPath.row].recordId, completionHandler: { (RecordID, error) -> Void in
+
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let share = UITableViewRowAction(style: .Normal, title: "Invite") { (action, indexPath) -> Void in
+            let text = "Hi! You are invited to join an event. Open with In Sync. Download the app before joining :)    "
+            let eventId = self.eventList[indexPath.row].id
+            let sharedObjects = [text, "InSync://=\(eventId)"]
+                let activityVC = UIActivityViewController(activityItems: sharedObjects, applicationActivities: nil)
+                self.presentViewController(activityVC, animated: true, completion: nil)
+        }
+        let delete = UITableViewRowAction(style: .Default, title: "Delete") { (action, indexPath) -> Void in
+            if let publicDatabase = self.publicDatabase{
+                publicDatabase.deleteRecordWithID(self.eventList[indexPath.row].recordId, completionHandler: { (RecordID, error) -> Void in
                     if let error = error {
                         print(error)
                     }else { print("success")
-                    self.update()}
+                        self.update()}
                 })
             }
         }
+        return[delete, share]
     }
-    func tableView(tableView: UITableView, performAction action: Selector, forRowAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
-        <#code#>
-    }
+    
+    func share(event:Event)
+    {
+        
     }
 
 }

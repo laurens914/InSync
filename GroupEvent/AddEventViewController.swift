@@ -24,6 +24,7 @@ class AddEventViewController: UIViewController
         let myRecord = CKRecord(recordType: "Event")
         myRecord.setObject(eventText.text, forKey: "Event")
         myRecord.setObject(eventDateText.text, forKey: "Date")
+        myRecord.setObject(NSUUID().UUIDString, forKey: "Id")
         
         
         if let  publicDatabase = publicDatabase{

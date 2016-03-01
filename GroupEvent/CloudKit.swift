@@ -1,14 +1,14 @@
+////
+////  CloudKit.swift
+////  GroupEvent
+////
+////  Created by Lauren Spatz on 2/26/16.
+////  Copyright © 2016 Lauren Spatz. All rights reserved.
+////
 //
-//  CloudKit.swift
-//  GroupEvent
+//import Foundation
+//import CloudKit
 //
-//  Created by Lauren Spatz on 2/26/16.
-//  Copyright © 2016 Lauren Spatz. All rights reserved.
-//
-
-import Foundation
-import CloudKit
-
 //typealias CloudCompletion = (success: Bool) -> ()
 //
 //class Cloud

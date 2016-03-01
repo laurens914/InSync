@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 import CloudKit
 
 typealias CloudCompletion = (success: Bool) -> ()
@@ -43,7 +44,8 @@ class Cloud
                         guard let event = record["Event"] as? String else {return}
                         guard let date = record["Date"] as? String else {return}
                         guard let recordId = record["recordID"] as? CKRecordID else {return}
-                        events.append(Event(eventName: event, eventDate: date, recordId: recordId))
+                        guard let id = record["Id"] as? String else {return}
+                        events.append(Event(eventName: event, eventDate: date, recordId: recordId, id: id))
                         
                     }
                     NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
@@ -64,10 +66,7 @@ class Cloud
         
         let query = CKQuery(recordType: "Task", predicate: predicate)
         self.database.performQuery(query, inZoneWithID: nil) { (records, error) -> Void in
-            
-            print(error)
-            print(records)
-            //        self.database.fetchRecordWithID(eventID, completionHandler: { (records, error) -> Void in
+
             if error == nil {
                 if let records = records {
                     var tasks = [Task]()
@@ -105,23 +104,60 @@ class Cloud
     
     func updateRecordWithId(recordId: CKRecordID, withIntValues values:[String: Int], completion: (success:Bool) -> ())
     {
-     self.database.fetchRecordWithID(recordId) { (record, error) -> Void in
-        if let error = error {print(error)}
-        guard let record = record else {return}
-        for (k,v) in values {
-            record[k]=v
-        }
-        self.database.saveRecord(record, completionHandler: { (record, error) -> Void in
-            if let error = error {print(error); completion(success: false)}
-            guard let record = record else {completion(success: false); return}
-            
-            NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                completion(success: true)
+        self.database.fetchRecordWithID(recordId) { (record, error) -> Void in
+            if let error = error {print(error)}
+            guard let record = record else {return}
+            for (k,v) in values {
+                record[k]=v
+            }
+            self.database.saveRecord(record, completionHandler: { (record, error) -> Void in
+                if let error = error {print(error); completion(success: false)}
+                guard let record = record else {completion(success: false); return}
+                
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    completion(success: true)
+                })
             })
-        })
         }
         
     }
+    
+    func addInvitedEvent(recordId: String, completion:(events: [Event]?) -> ())
+    {
+        let predicate = NSPredicate(format: "Id == %@", recordId)
+        let query = CKQuery(recordType: "Event", predicate: predicate)
+        self.database.performQuery(query, inZoneWithID: nil) { (records, error) -> Void in
+            
+            if error == nil {
+                if let records = records {
+                    var events = [Event]()
+                    for record in records {
+                        guard let event = record["Event"] as? String else {return}
+                        guard let date = record["Date"] as? String else {return}
+                        guard let recordId = record["recordID"] as? CKRecordID else {return}
+                        guard let id = record["Id"] as? String else {return}
+                        events.append(Event(eventName: event, eventDate: date, recordId: recordId, id: id))
+                        
+                    }
+                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                        
+                        for event in events {
+                            print(event.eventDate)
+                            print(event.id)
+                        }
+                        
+                        completion (events: events)
+                    })
+                }
+            } else {
+                print(error)
+            }
+        }
+        
+        
+    }
+    
+    
     
 }
 
