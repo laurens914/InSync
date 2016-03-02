@@ -20,10 +20,10 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
     let container = CKContainer.defaultContainer()
     
     let myRecord = CKRecord(recordType: "Event")
-    
-    
-    
 
+    @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
+    
     var eventList = [Event]()
         {
         didSet{
@@ -36,12 +36,27 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
         super.viewDidLoad()
         
     }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         publicDatabase = container.publicCloudDatabase
- 
+        self.tableView.separatorColor = UIColor.clearColor()
+        self.navigationController?.navigationBarHidden = true
+        self.prefersStatusBarHidden()
         self.update()
+        self.addButtonSetup()
         
+    }
+    
+    func addButtonSetup()
+    {
+        addButton.layer.cornerRadius = 15
+        addButton.layer.borderWidth = 1
+        addButton.layer.borderColor = UIColor.whiteColor().CGColor
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return true
     }
 
     override func didReceiveMemoryWarning() {
@@ -50,16 +65,20 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
     
     func update()
     {
-        let spinner = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        let spinner = activitySpinner
         spinner.hidesWhenStopped = true
         spinner.startAnimating()
         
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: spinner)
         
-        Cloud.shared.getPosts{ (posts) -> () in
+        
+        Cloud.shared.getPosts{ (posts, error) -> () in
+            if let error = error {
+                print(error)
+                self.displayAlertView()
+            }
             if let posts = posts {
                 self.eventList = posts
-                self.navigationItem.leftBarButtonItem = nil
+                self.activitySpinner.stopAnimating()
             } else {
                 print("no posts")
             }
@@ -112,10 +131,30 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
         return[delete, share]
     }
     
-    func share(event:Event)
+    func cellColor(indexPath: Int) -> UIColor
     {
-        
+        let cellCount = self.eventList.count-1
+        let cellCustomeColor = (CGFloat(indexPath)/CGFloat(cellCount)) * 0.7
+        return UIColor(red: 29/255, green: cellCustomeColor, blue:239/255, alpha: 0.8)
     }
-
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        cell.backgroundColor = cellColor(indexPath.row)
+    }
+    
+    func displayAlertView()
+    {
+        let alertController = UIAlertController(title: "No iCloud Account Found", message: "please sign into your account", preferredStyle: .Alert)
+        let settingsAlert = UIAlertAction(title: "Settings", style: .Default) { (alertAction) -> Void in
+            if let appSettings = NSURL(string:UIApplicationOpenSettingsURLString){
+                UIApplication.sharedApplication().openURL(appSettings)
+            }
+        }
+        alertController.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
+        alertController.addAction(settingsAlert)
+        self.presentViewController(alertController, animated: true, completion: nil)
+        
+        return
+    }
 }
 

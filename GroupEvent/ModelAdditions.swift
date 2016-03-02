@@ -32,7 +32,7 @@ class Cloud
         
     }
     
-    func getPosts(completion:(events: [Event]?) -> ())
+    func getPosts(completion:(events: [Event]?, error: String?) -> ())
     {
         let query = CKQuery(recordType: "Event", predicate: NSPredicate(value: true))
         self.database.performQuery(query, inZoneWithID: nil) { (records, error) -> Void in
@@ -49,11 +49,13 @@ class Cloud
                         
                     }
                     NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                        completion (events: events)
+                        completion (events: events, error: nil)
                     })
                 }
             } else {
-                print(error)
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    completion(events: nil, error: error?.localizedDescription)
+                })               
             }
         }
     }
@@ -70,7 +72,6 @@ class Cloud
             if error == nil {
                 if let records = records {
                     var tasks = [Task]()
-                    print(records)
                     for record in records {
                         guard let assetTask = record["Task"] as? String else { print("Task Failed."); return}
                         guard let assetDate = record["Date"] as? String else {print("Date Failed.");return}
@@ -82,9 +83,9 @@ class Cloud
                         
                         switch completedInt{
                         case 0:
-                            completed = isCompleted.notComplete
-                        case 1:
                             completed = isCompleted.completed
+                        case 1:
+                            completed = isCompleted.notComplete
                         default:
                             print("This is very very bad....")
                         }

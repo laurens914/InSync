@@ -16,9 +16,17 @@ class AddEventViewController: UIViewController
     var record: CKRecord?
     var postedURL: NSURL?
     
+    
+    @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var eventDateText: UITextField!
     @IBOutlet weak var datePickerEvent: UIDatePicker!
     @IBOutlet weak var eventText: UITextField!
+    @IBAction func cancel(sender: AnyObject) {
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
+        
+    }
     @IBAction func addEvent(sender: AnyObject) {
         
         let myRecord = CKRecord(recordType: "Event")
@@ -36,7 +44,7 @@ class AddEventViewController: UIViewController
                         dispatch_async(dispatch_get_main_queue()) {
                           print("success")
                         self.record = myRecord
-                            self.navigationController?.popViewControllerAnimated(true)
+                            self.dismissViewControllerAnimated(true, completion: nil)
                         }
                         
                     }
@@ -50,6 +58,8 @@ class AddEventViewController: UIViewController
         publicDatabase = container.publicCloudDatabase
         
         self.datePickerEvent.addTarget(self, action: Selector("datePickerChanged:"), forControlEvents: UIControlEvents.ValueChanged)
+      
+        
     }
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
                 eventText.endEditing(true)
@@ -81,9 +91,28 @@ class AddEventViewController: UIViewController
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        eventText.center.x -= view.bounds.width
+        //        eventText.center.x -= view.bounds.width
+        let bgColor = CAGradientLayer().gradientBackground()
+        bgColor.frame = self.view.bounds
+        self.view.layer.insertSublayer(bgColor, atIndex: 0)
+        self.buttonSetup()
+
+    }
+//    func updateDatePicker()
+//    {
+//        self.datePickerEvent.setValue(UIColor.whiteColor(), forKeyPath: "textColor")
+//    }
+    func buttonSetup()
+    {
+        addButton.layer.cornerRadius = 15
+        addButton.layer.borderWidth = 1
+        addButton.layer.borderColor = UIColor.whiteColor().CGColor
+        cancelButton.layer.cornerRadius = 15
+        cancelButton.layer.borderWidth = 1
+        cancelButton.layer.borderColor = UIColor.whiteColor().CGColor
     }
     
- 
 }
+
+
 

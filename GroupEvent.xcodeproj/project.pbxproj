@@ -19,6 +19,7 @@
 		899BDC5A1C80BFDE003580E8 /* Save.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899BDC591C80BFDE003580E8 /* Save.swift */; };
 		899BDC5C1C80C2D5003580E8 /* Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 899BDC5B1C80C2D5003580E8 /* Additions.swift */; };
 		89AD25071C84F7E8009FCD18 /* TaskTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89AD25061C84F7E8009FCD18 /* TaskTableViewCell.swift */; };
+		89AD25091C8668A9009FCD18 /* AddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89AD25081C8668A9009FCD18 /* AddButton.swift */; };
 		89F5F9BB1C7D21EB00D0EE36 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F5F9BA1C7D21EB00D0EE36 /* TaskViewController.swift */; };
 		89F5F9BD1C7D21FE00D0EE36 /* AddTaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F5F9BC1C7D21FE00D0EE36 /* AddTaskViewController.swift */; };
 		89F5F9BF1C7D220700D0EE36 /* AddEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89F5F9BE1C7D220700D0EE36 /* AddEventViewController.swift */; };
@@ -44,6 +45,7 @@
 		899BDC591C80BFDE003580E8 /* Save.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Save.swift; sourceTree = "<group>"; };
 		899BDC5B1C80C2D5003580E8 /* Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Additions.swift; sourceTree = "<group>"; };
 		89AD25061C84F7E8009FCD18 /* TaskTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskTableViewCell.swift; sourceTree = "<group>"; };
+		89AD25081C8668A9009FCD18 /* AddButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddButton.swift; sourceTree = "<group>"; };
 		89F5F9BA1C7D21EB00D0EE36 /* TaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		89F5F9BC1C7D21FE00D0EE36 /* AddTaskViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddTaskViewController.swift; sourceTree = "<group>"; };
 		89F5F9BE1C7D220700D0EE36 /* AddEventViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEventViewController.swift; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 				899BDC5B1C80C2D5003580E8 /* Additions.swift */,
 				899310701C80F69100996DCD /* CloudKit.swift */,
 				89AD25061C84F7E8009FCD18 /* TaskTableViewCell.swift */,
+				89AD25081C8668A9009FCD18 /* AddButton.swift */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -241,6 +244,7 @@
 				89F5F9C31C7D228800D0EE36 /* Task.swift in Sources */,
 				899310791C810C2400996DCD /* Id.swift in Sources */,
 				89F5F9BB1C7D21EB00D0EE36 /* TaskViewController.swift in Sources */,
+				89AD25091C8668A9009FCD18 /* AddButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,6 +361,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = GroupEvent/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.laurenspatz.GroupEvent;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -372,6 +377,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = GroupEvent/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.laurenspatz.GroupEvent;
 				PRODUCT_NAME = "$(TARGET_NAME)";

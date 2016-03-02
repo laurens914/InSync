@@ -25,9 +25,9 @@ class TaskTableViewCell: UITableViewCell {
             completedButtonState.setBackgroundImage(UIImage(named: "sample-1040-checkmark"), forState: .Normal)
             self.currentTask.completed = .notComplete
             self.completedButtonState.backgroundColor = UIColor.greenColor()
-            Cloud.shared.updateRecordWithId(self.currentTask.taskId, withIntValues: ["IsCompleted": 0], completion: { (success) -> () in
+            Cloud.shared.updateRecordWithId(self.currentTask.taskId, withIntValues: ["IsCompleted": 1], completion: { (success) -> () in
                 if success {
-                    print("yay! - task NOT Completed!")
+                    print("yay! - task Completed!")
                 }
             })
         
@@ -37,9 +37,9 @@ class TaskTableViewCell: UITableViewCell {
             completedButtonState.setBackgroundImage(UIImage(named: "uncheckedBox"), forState: .Normal)
             self.currentTask.completed = .completed
             self.completedButtonState.backgroundColor = UIColor.redColor()
-            Cloud.shared.updateRecordWithId(self.currentTask.taskId, withIntValues: ["IsCompleted": 1], completion: { (success) -> () in
+            Cloud.shared.updateRecordWithId(self.currentTask.taskId, withIntValues: ["IsCompleted": 0], completion: { (success) -> () in
                 if success{
-                    print("yay! - task Completed!")
+                    print("yay! - task NOT Completed!")
                 }
             })
         
