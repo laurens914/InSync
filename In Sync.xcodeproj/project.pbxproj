@@ -30,7 +30,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8921C8D61C77D6EE00D270CF /* GroupEvent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GroupEvent.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8921C8D61C77D6EE00D270CF /* In Sync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "In Sync.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8921C8D91C77D6EE00D270CF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8921C8DB1C77D6EE00D270CF /* EventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewController.swift; sourceTree = "<group>"; };
 		8921C8DE1C77D6EE00D270CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -78,7 +78,7 @@
 		8921C8D71C77D6EE00D270CF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8921C8D61C77D6EE00D270CF /* GroupEvent.app */,
+				8921C8D61C77D6EE00D270CF /* In Sync.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -155,9 +155,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8921C8D51C77D6EE00D270CF /* GroupEvent */ = {
+		8921C8D51C77D6EE00D270CF /* In Sync */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8921C8E81C77D6EE00D270CF /* Build configuration list for PBXNativeTarget "GroupEvent" */;
+			buildConfigurationList = 8921C8E81C77D6EE00D270CF /* Build configuration list for PBXNativeTarget "In Sync" */;
 			buildPhases = (
 				8921C8D21C77D6EE00D270CF /* Sources */,
 				8921C8D31C77D6EE00D270CF /* Frameworks */,
@@ -167,9 +167,9 @@
 			);
 			dependencies = (
 			);
-			name = GroupEvent;
+			name = "In Sync";
 			productName = GroupEvent;
-			productReference = 8921C8D61C77D6EE00D270CF /* GroupEvent.app */;
+			productReference = 8921C8D61C77D6EE00D270CF /* In Sync.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -193,7 +193,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8921C8D11C77D6EE00D270CF /* Build configuration list for PBXProject "GroupEvent" */;
+			buildConfigurationList = 8921C8D11C77D6EE00D270CF /* Build configuration list for PBXProject "In Sync" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -206,7 +206,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8921C8D51C77D6EE00D270CF /* GroupEvent */,
+				8921C8D51C77D6EE00D270CF /* In Sync */,
 			);
 		};
 /* End PBXProject section */
@@ -364,7 +364,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.laurenspatz.GroupEvent;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "In Sync";
 				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
@@ -380,7 +380,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.laurenspatz.GroupEvent;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "In Sync";
 				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
@@ -388,7 +388,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8921C8D11C77D6EE00D270CF /* Build configuration list for PBXProject "GroupEvent" */ = {
+		8921C8D11C77D6EE00D270CF /* Build configuration list for PBXProject "In Sync" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8921C8E61C77D6EE00D270CF /* Debug */,
@@ -397,7 +397,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8921C8E81C77D6EE00D270CF /* Build configuration list for PBXNativeTarget "GroupEvent" */ = {
+		8921C8E81C77D6EE00D270CF /* Build configuration list for PBXNativeTarget "In Sync" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8921C8E91C77D6EE00D270CF /* Debug */,
