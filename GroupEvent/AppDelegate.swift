@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  GroupEvent
+//  InSync
 //
 //  Created by Lauren Spatz on 2/19/16.
 //  Copyright © 2016 Lauren Spatz. All rights reserved.

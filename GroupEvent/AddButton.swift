@@ -1,6 +1,6 @@
 //
 //  AddButton.swift
-//  GroupEvent
+//  InSync
 //
 //  Created by Lauren Spatz on 3/1/16.
 //  Copyright © 2016 Lauren Spatz. All rights reserved.
