@@ -29,12 +29,13 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
         {
         didSet{
             self.tableView.reloadData()
-            
+
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        Store.shared.addId("test")
     }
     
     override func viewDidAppear(animated: Bool) {

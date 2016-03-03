@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8902724E1C88BE7000BA2B2F /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8902724D1C88BE7000BA2B2F /* Store.swift */; };
 		8921C8DA1C77D6EE00D270CF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8921C8D91C77D6EE00D270CF /* AppDelegate.swift */; };
 		8921C8DC1C77D6EE00D270CF /* EventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8921C8DB1C77D6EE00D270CF /* EventViewController.swift */; };
 		8921C8DF1C77D6EE00D270CF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8921C8DD1C77D6EE00D270CF /* Main.storyboard */; };
@@ -30,6 +31,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8902724D1C88BE7000BA2B2F /* Store.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		8921C8D61C77D6EE00D270CF /* In Sync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "In Sync.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8921C8D91C77D6EE00D270CF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8921C8DB1C77D6EE00D270CF /* EventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventViewController.swift; sourceTree = "<group>"; };
@@ -148,6 +150,7 @@
 				89F5F9C51C7D23CF00D0EE36 /* EventDo.swift */,
 				89F5F9C71C7D23D700D0EE36 /* TaskDo.swift */,
 				899310781C810C2400996DCD /* Id.swift */,
+				8902724D1C88BE7000BA2B2F /* Store.swift */,
 			);
 			name = Protocol;
 			sourceTree = "<group>";
@@ -242,6 +245,7 @@
 				8921C8DA1C77D6EE00D270CF /* AppDelegate.swift in Sources */,
 				899310771C80F92200996DCD /* ModelAdditions.swift in Sources */,
 				89F5F9C11C7D227D00D0EE36 /* Event.swift in Sources */,
+				8902724E1C88BE7000BA2B2F /* Store.swift in Sources */,
 				89F5F9C61C7D23CF00D0EE36 /* EventDo.swift in Sources */,
 				899BDC5C1C80C2D5003580E8 /* Additions.swift in Sources */,
 				89F5F9C31C7D228800D0EE36 /* Task.swift in Sources */,

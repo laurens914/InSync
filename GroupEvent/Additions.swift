@@ -12,7 +12,7 @@ extension String
 {
    static func savePath() -> String
    {
-    guard let saved = NSURL.toDoURL().path else { fatalError()}
+    guard let saved = NSURL.archiveURL().path else { fatalError()}
     
     return saved
     }
@@ -20,7 +20,7 @@ extension String
 
 extension NSURL
 {
-    class func toDoURL() -> NSURL
+    class func archiveURL() -> NSURL
     {
         guard let documentsDirectory = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first else { fatalError()}
         return documentsDirectory.URLByAppendingPathComponent("event")
