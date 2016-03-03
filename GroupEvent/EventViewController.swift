@@ -36,11 +36,15 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
     override func viewDidLoad() {
         super.viewDidLoad()
         let ids = Store.shared.ids()
-        let arrayIds = Array(ids)
+        print(ids.count)
         
-        if let id = arrayIds.last {
-            print(id)
+        Cloud.shared.addInvitedEvent(ids) { (events) -> () in
+            guard let events = events else { return }
+            for event in events {
+                print(event.eventName)
+            }
         }
+        
 
         
     }
@@ -123,6 +127,7 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
                 self.presentViewController(activityVC, animated: true, completion: nil)
         }
         let delete = UITableViewRowAction(style: .Default, title: "Delete") { (action, indexPath) -> Void in
+//            self.eventList.removeAtIndex(indexPath)
             if let publicDatabase = self.publicDatabase{
                 publicDatabase.deleteRecordWithID(self.eventList[indexPath.row].recordId, completionHandler: { (RecordID, error) -> Void in
                     if let error = error {

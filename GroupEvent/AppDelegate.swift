@@ -25,10 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         publicDatabase = container.publicCloudDatabase
         let urlString = String(url)
         let recordNameId = urlString.componentsSeparatedByString("=")
-        let recordName = recordNameId[1]
-        Cloud.shared.addInvitedEvent(recordName) { (events) -> () in
-            print("success")
-        }
+//        let recordName = recordNameId[1]
+//        Cloud.shared.addInvitedEvent(recordName) { (events) -> () in
+//            print("success")
+//        }
         
         return true
         
