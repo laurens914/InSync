@@ -36,6 +36,7 @@ class AddEventViewController: UIViewController
             myRecord.setObject(eventText.text, forKey: "Event")
             myRecord.setObject(eventDateText.text, forKey: "Date")
             myRecord.setObject(id, forKey: "Id")
+            myRecord.setObject(eventText.text, forKey: "Name")
             
             if let  publicDatabase = publicDatabase{
                 publicDatabase.saveRecord(myRecord, completionHandler:
@@ -43,7 +44,7 @@ class AddEventViewController: UIViewController
                         if let error = error {
                             print(error)
                         } else {
-                            dispatch_async(dispatch_get_main_queue()) {
+                            NSOperationQueue().addOperationWithBlock{ () -> Void in
                             }
                             self.dismissViewControllerAnimated(true, completion: nil)
                             self.record = myRecord
@@ -59,6 +60,7 @@ class AddEventViewController: UIViewController
         super.viewDidLoad()
         publicDatabase = container.publicCloudDatabase
         self.datePickerEvent.addTarget(self, action: Selector("datePickerChanged:"), forControlEvents: UIControlEvents.ValueChanged)
+        self.datePickerEvent.setValue(UIColor.whiteColor(), forKeyPath: "textColor")
       
         
     }
@@ -71,8 +73,7 @@ class AddEventViewController: UIViewController
     {
     let dateFormatter = NSDateFormatter()
     
-    dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
-    dateFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
+    dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
     
     let strDate = dateFormatter.stringFromDate(datePickerEvent.date)
     eventDateText.text = strDate

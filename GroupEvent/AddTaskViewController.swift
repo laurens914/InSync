@@ -40,15 +40,13 @@ class AddTaskViewController: UIViewController
                     if let error  = error {
                         print(error)
                     } else {
-                        dispatch_async(dispatch_get_main_queue()) {
-                        }
+                        NSOperationQueue().addOperationWithBlock{ () -> Void in }
                         self.dismissViewControllerAnimated(true, completion: nil)
                         self.record = myRecord
                     }
                 }))
         }
     }
-//    @IBOutlet weak var taskDatePicker: UIDatePicker!
     @IBOutlet weak var taskText: UITextField!
     @IBOutlet weak var taskNotes: UITextField!
     @IBOutlet weak var dismiss: UIButton!
@@ -57,8 +55,6 @@ class AddTaskViewController: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         publicDatabase = container.publicCloudDatabase
-        
-//        self.taskDatePicker.addTarget(self, action: Selector("datePickerChanged:"), forControlEvents: UIControlEvents.ValueChanged)
         let bgColor = CAGradientLayer().gradientBackground()
         bgColor.frame = self.view.bounds
         self.view.layer.insertSublayer(bgColor, atIndex: 0)
@@ -71,18 +67,6 @@ class AddTaskViewController: UIViewController
         taskText.endEditing(true)
         taskNotes.endEditing(true)
     }
-    
-//    func datePickerChanged(datePickerEvent: UIDatePicker)
-//    {
-//        let dateFormatter = NSDateFormatter()
-//        
-//        dateFormatter.dateStyle = NSDateFormatterStyle.ShortStyle
-//        dateFormatter.timeStyle = NSDateFormatterStyle.ShortStyle
-//        
-//        let strDate = dateFormatter.stringFromDate(datePickerEvent.date)
-//        taskDate.text = strDate
-//    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -97,8 +81,6 @@ class AddTaskViewController: UIViewController
         dismiss.layer.borderColor = UIColor.whiteColor().CGColor
     }
 }
-
-
 
 extension CAGradientLayer {
     func gradientBackground() -> CAGradientLayer

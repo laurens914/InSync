@@ -55,7 +55,7 @@ class Cloud
             } else {
                 NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                     completion(events: nil, error: error?.localizedDescription)
-                })               
+                })
             }
         }
     }
@@ -68,7 +68,7 @@ class Cloud
         
         let query = CKQuery(recordType: "Task", predicate: predicate)
         self.database.performQuery(query, inZoneWithID: nil) { (records, error) -> Void in
-
+            
             if error == nil {
                 if let records = records {
                     var tasks = [Task]()
@@ -123,8 +123,10 @@ class Cloud
         
     }
     
-    func addInvitedEvent(recordId:Set<String>, completion:(events: [Event]?) -> ())
+    func addInvitedEvent(recordId:Set<String>, completion:(events: [Event]?, error:String?) -> ())
     {
+        if recordId.count == 0 { completion(events: nil , error:nil) }
+        
         var events = [Event]()
         var count = recordId.count
         
@@ -136,7 +138,7 @@ class Cloud
                 
                 if error == nil {
                     if let records = records {
-
+                        
                         for record in records {
                             guard let event = record["Event"] as? String else {return}
                             guard let date = record["Date"] as? String else {return}
@@ -149,21 +151,23 @@ class Cloud
                         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                             count--
                             if count == 0 {
-                                completion (events: events)
+                                completion (events: events, error:nil)
                             }
                         })
                         
                     }
-                } else {
-                    print(error)
+                }  else {
+                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                        completion(events: nil, error: error?.localizedDescription)
+                    })
                 }
+                
             }
-            
         }
+        
+        
+        
     }
-    
-    
-    
 }
 
 

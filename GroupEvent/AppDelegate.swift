@@ -24,11 +24,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
         publicDatabase = container.publicCloudDatabase
         let urlString = String(url)
-        let recordNameId = urlString.componentsSeparatedByString("=")
-//        let recordName = recordNameId[1]
-//        Cloud.shared.addInvitedEvent(recordName) { (events) -> () in
-//            print("success")
-//        }
+        let components = urlString.componentsSeparatedByString("=")
+        if let id = components.last  {
+            Store.shared.addId(id)
+        }
+      
+        Cloud.shared.addInvitedEvent(Store.shared.ids()) { (events) -> () in
+            print("success")
+        }
         
         return true
         

@@ -9,9 +9,12 @@
 import UIKit
 import CloudKit
 
-class EventViewController: UIViewController,UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate
+class EventViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate
 {
 
+    @IBAction func refresh(sender: AnyObject) {
+        self.update()
+    }
     @IBOutlet weak var tableView: UITableView!
     
     var event: Event?
@@ -19,6 +22,7 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
     var publicDatabase: CKDatabase?
     var ckRecord: CKRecord?
     let container = CKContainer.defaultContainer()
+    var refreshControl: UIRefreshControl!
     
     let myRecord = CKRecord(recordType: "Event")
 
@@ -29,25 +33,25 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
         {
         didSet{
             self.tableView.reloadData()
-
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.refreshControl = UIRefreshControl()
+        self.tableView.addSubview(refreshControl)
+        self.refreshControl.backgroundColor = UIColor(red: 29/255, green: 89/255, blue:239/255, alpha: 0.9)
         let ids = Store.shared.ids()
         print(ids.count)
         
-        Cloud.shared.addInvitedEvent(ids) { (events) -> () in
+        Cloud.shared.addInvitedEvent(ids) { (events, error) -> () in
             guard let events = events else { return }
             for event in events {
                 print(event.eventName)
             }
         }
-        
-
-        
     }
+
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -81,16 +85,20 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
         let spinner = activitySpinner
         spinner.hidesWhenStopped = true
         spinner.startAnimating()
-     Cloud.shared.getPosts{ (posts, error) -> () in
-            if let posts = posts {
+        
+        Cloud.shared.addInvitedEvent(Store.shared.ids()) { (events, error) -> () in
+            if let posts = events {
                 self.eventList = posts
                 self.activitySpinner.stopAnimating()
+            } else{
+                self.activitySpinner.stopAnimating()    
             }
             if let error = error {
                 print(error)
                 self.displayAlertView()
             }
         }
+        
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -106,6 +114,8 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
         let eventRow = self.eventList[indexPath.row]
         eventCell.textLabel?.text = eventRow.eventName
         eventCell.detailTextLabel?.text = eventRow.eventDate
+        eventCell.showsReorderControl = true
+        
         return eventCell
     }
     
@@ -117,6 +127,8 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
         self.selectedItem = eventList[indexPath.row]
         performSegueWithIdentifier("TaskViewController", sender: nil)
     }
+    
+
 
     func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let share = UITableViewRowAction(style: .Normal, title: "Invite") { (action, indexPath) -> Void in
@@ -127,7 +139,6 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
                 self.presentViewController(activityVC, animated: true, completion: nil)
         }
         let delete = UITableViewRowAction(style: .Default, title: "Delete") { (action, indexPath) -> Void in
-//            self.eventList.removeAtIndex(indexPath)
             if let publicDatabase = self.publicDatabase{
                 publicDatabase.deleteRecordWithID(self.eventList[indexPath.row].recordId, completionHandler: { (RecordID, error) -> Void in
                     if let error = error {
@@ -143,8 +154,8 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
     func cellColor(indexPath: Int) -> UIColor
     {
         let cellCount = self.eventList.count-1
-        let cellCustomeColor = (CGFloat(indexPath)/CGFloat(cellCount)) * 0.7
-        return UIColor(red: 29/255, green: cellCustomeColor, blue:239/255, alpha: 0.8)
+        let cellCustomeColor = (CGFloat(indexPath)/CGFloat(cellCount)) * 0.9
+        return UIColor(red: 29/255, green: cellCustomeColor, blue:239/255, alpha: 0.9)
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
