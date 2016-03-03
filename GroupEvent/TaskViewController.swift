@@ -39,6 +39,7 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupTable()
     
     }
 
@@ -55,11 +56,11 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.taskButtonSetup()
       
     }
-//    func setupTable()
-//    {
-//        self.taskTableView.estimatedRowHeight = 200
-//        self.taskTableView.rowHeight = UITableViewAutomaticDimension
-//    }
+    func setupTable()
+    {
+        self.taskTableView.estimatedRowHeight = 100
+        self.taskTableView.rowHeight = UITableViewAutomaticDimension
+    }
     
     func updateTasks()
     {
@@ -104,12 +105,10 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
         switch taskRow.completed{
         case .notComplete:
-            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "sample-1040-checkmark"), forState: .Normal)
-            taskCell.completedButtonState.backgroundColor = UIColor.greenColor()
+            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "checkmark"), forState: .Normal)
             
         case .completed:
-            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "uncheckedBox"), forState: .Normal)
-            taskCell.completedButtonState.backgroundColor = UIColor.redColor()
+            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "box"), forState: .Normal)
         }
         
         taskCell.currentTask = taskRow

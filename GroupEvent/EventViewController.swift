@@ -14,6 +14,7 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
 
     @IBOutlet weak var tableView: UITableView!
     
+    var event: Event?
     var selectedItem: Event?
     var publicDatabase: CKDatabase?
     var ckRecord: CKRecord?
@@ -34,11 +35,11 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        self.update()
         publicDatabase = container.publicCloudDatabase
         self.tableView.separatorColor = UIColor.clearColor()
         self.navigationController?.navigationBarHidden = true
@@ -68,19 +69,14 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
         let spinner = activitySpinner
         spinner.hidesWhenStopped = true
         spinner.startAnimating()
-        
-        
-        
-        Cloud.shared.getPosts{ (posts, error) -> () in
-            if let error = error {
-                print(error)
-                self.displayAlertView()
-            }
+     Cloud.shared.getPosts{ (posts, error) -> () in
             if let posts = posts {
                 self.eventList = posts
                 self.activitySpinner.stopAnimating()
-            } else {
-                print("no posts")
+            }
+            if let error = error {
+                print(error)
+                self.displayAlertView()
             }
         }
     }

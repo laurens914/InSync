@@ -17,6 +17,7 @@ class Event
     var recordId: CKRecordID
     var id: String
     
+    
     init(eventName:String, eventDate: String, recordId: CKRecordID, id: String = NSUUID().UUIDString)
     {
         self.eventName = eventName

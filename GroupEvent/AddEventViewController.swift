@@ -17,6 +17,7 @@ class AddEventViewController: UIViewController
     var postedURL: NSURL?
     
     
+  
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var eventDateText: UITextField!
@@ -27,6 +28,7 @@ class AddEventViewController: UIViewController
         self.dismissViewControllerAnimated(true, completion: nil)
         
     }
+
     @IBAction func addEvent(sender: AnyObject) {
         
         let myRecord = CKRecord(recordType: "Event")
@@ -42,10 +44,10 @@ class AddEventViewController: UIViewController
                         print(error)
                     } else {
                         dispatch_async(dispatch_get_main_queue()) {
-                          print("success")
-                        self.record = myRecord
-                            self.dismissViewControllerAnimated(true, completion: nil)
                         }
+                            self.dismissViewControllerAnimated(true, completion: nil)
+                            self.record = myRecord
+                       
                         
                     }
                 }))
@@ -56,7 +58,6 @@ class AddEventViewController: UIViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         publicDatabase = container.publicCloudDatabase
-        
         self.datePickerEvent.addTarget(self, action: Selector("datePickerChanged:"), forControlEvents: UIControlEvents.ValueChanged)
       
         
@@ -91,17 +92,13 @@ class AddEventViewController: UIViewController
     }
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        //        eventText.center.x -= view.bounds.width
         let bgColor = CAGradientLayer().gradientBackground()
         bgColor.frame = self.view.bounds
         self.view.layer.insertSublayer(bgColor, atIndex: 0)
         self.buttonSetup()
 
     }
-//    func updateDatePicker()
-//    {
-//        self.datePickerEvent.setValue(UIColor.whiteColor(), forKeyPath: "textColor")
-//    }
+
     func buttonSetup()
     {
         addButton.layer.cornerRadius = 15
