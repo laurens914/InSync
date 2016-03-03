@@ -35,7 +35,14 @@ class EventViewController: UIViewController,UITableViewDataSource, UITableViewDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        Store.shared.addId("test")
+        let ids = Store.shared.ids()
+        let arrayIds = Array(ids)
+        
+        if let id = arrayIds.last {
+            print(id)
+        }
+
+        
     }
     
     override func viewDidAppear(animated: Bool) {

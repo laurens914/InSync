@@ -30,29 +30,29 @@ class AddEventViewController: UIViewController
     }
 
     @IBAction func addEvent(sender: AnyObject) {
-        
-        let myRecord = CKRecord(recordType: "Event")
-        myRecord.setObject(eventText.text, forKey: "Event")
-        myRecord.setObject(eventDateText.text, forKey: "Date")
-        myRecord.setObject(NSUUID().UUIDString, forKey: "Id")
-        
-        
-        if let  publicDatabase = publicDatabase{
-            publicDatabase.saveRecord(myRecord, completionHandler:
-                ({returnRecord, error in
-                    if let error = error {
-                        print(error)
-                    } else {
-                        dispatch_async(dispatch_get_main_queue()) {
-                        }
+        let id = NSUUID().UUIDString
+        if Store.shared.addId(id){
+            let myRecord = CKRecord(recordType: "Event")
+            myRecord.setObject(eventText.text, forKey: "Event")
+            myRecord.setObject(eventDateText.text, forKey: "Date")
+            myRecord.setObject(id, forKey: "Id")
+            
+            if let  publicDatabase = publicDatabase{
+                publicDatabase.saveRecord(myRecord, completionHandler:
+                    ({returnRecord, error in
+                        if let error = error {
+                            print(error)
+                        } else {
+                            dispatch_async(dispatch_get_main_queue()) {
+                            }
                             self.dismissViewControllerAnimated(true, completion: nil)
                             self.record = myRecord
-                       
-                        
-                    }
-                }))
+                            
+                        }
+                    }))
+            }
+            
         }
-        
         
     }
     override func viewDidLoad() {

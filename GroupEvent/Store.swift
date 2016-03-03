@@ -11,26 +11,32 @@ import Foundation
 
 class Store
 {
-    static let shared =  Store()
-    private init (){}
-    
-    private var database: Set<String> = [""]
-    
-    func addId(string: String)
+    static let shared = Store()
+    private init ()
     {
-        self.database.insert(string)
-        self.save()
+        if let database = NSKeyedUnarchiver.unarchiveObjectWithFile(String.savePath()) as? Set<String> {
+            self.database = database
+        }
     }
     
-    func ids() -> Set<String> 
+    private var database = Set<String>()
+    
+    func addId(string: String) -> Bool
+    {
+        self.database.insert(string)
+        return self.save()
+    }
+    
+    func ids() -> Set<String>
     {
         return self.database
     }
     
-    private func save ()
+    private func save () -> Bool
     {
         let archivePath = String.savePath()
-        NSKeyedArchiver.archiveRootObject(self.database, toFile: archivePath)
+        return NSKeyedArchiver.archiveRootObject(self.database, toFile: archivePath)
+        
     
     }
 }
