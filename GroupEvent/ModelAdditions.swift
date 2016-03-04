@@ -32,33 +32,6 @@ class Cloud
         
     }
     
-    func getPosts(completion:(events: [Event]?, error: String?) -> ())
-    {
-        let query = CKQuery(recordType: "Event", predicate: NSPredicate(value: true))
-        self.database.performQuery(query, inZoneWithID: nil) { (records, error) -> Void in
-            
-            if error == nil {
-                if let records = records {
-                    var events = [Event]()
-                    for record in records {
-                        guard let event = record["Event"] as? String else {return}
-                        guard let date = record["Date"] as? String else {return}
-                        guard let recordId = record["recordID"] as? CKRecordID else {return}
-                        guard let id = record["Id"] as? String else {return}
-                        events.append(Event(eventName: event, eventDate: date, recordId: recordId, id: id))
-                        
-                    }
-                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                        completion (events: events, error: nil)
-                    })
-                }
-            } else {
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    completion(events: nil, error: error?.localizedDescription)
-                })
-            }
-        }
-    }
     func getTasksWithEventId(eventID: CKRecordID, completion:(tasks: [Task]?) -> ())
     {
         
@@ -113,8 +86,6 @@ class Cloud
             }
             self.database.saveRecord(record, completionHandler: { (record, error) -> Void in
                 if let error = error {print(error); completion(success: false)}
-                guard let record = record else {completion(success: false); return}
-                
                 NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                     completion(success: true)
                 })

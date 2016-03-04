@@ -12,9 +12,6 @@ import CloudKit
 class EventViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UINavigationControllerDelegate
 {
 
-    @IBAction func refresh(sender: AnyObject) {
-        self.update()
-    }
     @IBOutlet weak var tableView: UITableView!
     
     var event: Event?
@@ -23,11 +20,10 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     var ckRecord: CKRecord?
     let container = CKContainer.defaultContainer()
     var refreshControl: UIRefreshControl!
-    
     let myRecord = CKRecord(recordType: "Event")
 
     @IBOutlet weak var addButton: UIButton!
-    @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
+
     
     var eventList = [Event]()
         {
@@ -39,6 +35,8 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         self.refreshControl = UIRefreshControl()
+        self.refreshControl.attributedTitle = NSAttributedString(string:"Loading")
+        self.refreshControl.addTarget(self, action: "refreshView:", forControlEvents: UIControlEvents.ValueChanged)
         self.tableView.addSubview(refreshControl)
         self.refreshControl.backgroundColor = UIColor(red: 29/255, green: 89/255, blue:239/255, alpha: 0.9)
         let ids = Store.shared.ids()
@@ -52,6 +50,10 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
 
+    func refreshView(sender:AnyObject)
+    {
+       self.update()
+    }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
@@ -62,7 +64,6 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
         self.prefersStatusBarHidden()
         self.update()
         self.addButtonSetup()
-        
     }
     
     func addButtonSetup()
@@ -82,21 +83,17 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func update()
     {
-        let spinner = activitySpinner
-        spinner.hidesWhenStopped = true
-        spinner.startAnimating()
-        
         Cloud.shared.addInvitedEvent(Store.shared.ids()) { (events, error) -> () in
             if let posts = events {
                 self.eventList = posts
-                self.activitySpinner.stopAnimating()
-            } else{
-                self.activitySpinner.stopAnimating()    
             }
             if let error = error {
                 print(error)
                 self.displayAlertView()
             }
+        }
+        if self.refreshControl.refreshing{
+            self.refreshControl.endRefreshing()
         }
         
     }

@@ -15,9 +15,7 @@ class AddEventViewController: UIViewController
     var publicDatabase: CKDatabase?
     var record: CKRecord?
     var postedURL: NSURL?
-    
-    
-  
+
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var eventDateText: UITextField!

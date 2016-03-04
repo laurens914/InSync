@@ -67,31 +67,17 @@
                                     <segue destination="eCV-LO-uzM" kind="presentation" id="oa2-UT-UqE"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="NDU-T4-cbs">
-                                <rect key="frame" x="290" y="290" width="20" height="20"/>
-                            </activityIndicatorView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oJu-9k-gOc">
-                                <rect key="frame" x="560" y="555" width="20" height="22"/>
-                                <state key="normal" image="refresh"/>
-                                <connections>
-                                    <action selector="refresh:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gdC-wj-S9m"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.63529411764705879" green="0.70980392156862748" blue="0.89411764705882346" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="hmf-De-dnK" secondAttribute="bottom" constant="23" id="0P6-hQ-GzS"/>
                             <constraint firstItem="iUg-AY-jKw" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="6VQ-Ux-hQq"/>
-                            <constraint firstItem="NDU-T4-cbs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="BYO-TE-fJG"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="oJu-9k-gOc" secondAttribute="bottom" constant="23" id="QJV-Fq-SNO"/>
                             <constraint firstAttribute="trailing" secondItem="iUg-AY-jKw" secondAttribute="trailing" id="S3p-fa-ULp"/>
                             <constraint firstItem="iUg-AY-jKw" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Whn-fD-TyY"/>
                             <constraint firstItem="hmf-De-dnK" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Y2T-EG-PsE"/>
-                            <constraint firstItem="NDU-T4-cbs" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="YTt-rM-Wg4"/>
                             <constraint firstItem="iUg-AY-jKw" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-64" id="ZY7-Sp-IYJ"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="iUg-AY-jKw" secondAttribute="bottom" id="cc9-aj-4AN"/>
                             <constraint firstItem="iUg-AY-jKw" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="15" id="mpF-hm-dU6"/>
-                            <constraint firstAttribute="trailing" secondItem="oJu-9k-gOc" secondAttribute="trailing" constant="20" id="nou-7A-RWE"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
@@ -102,7 +88,6 @@
                     </view>
                     <navigationItem key="navigationItem" title="Event" id="T1o-F9-XuD"/>
                     <connections>
-                        <outlet property="activitySpinner" destination="NDU-T4-cbs" id="yFZ-dV-HjW"/>
                         <outlet property="addButton" destination="hmf-De-dnK" id="Pwn-ie-MVY"/>
                         <outlet property="tableView" destination="iUg-AY-jKw" id="NTv-Wi-JyS"/>
                         <segue destination="qVo-t8-ccw" kind="presentation" identifier="TaskViewController" id="TaX-0A-PBV"/>
@@ -186,9 +171,6 @@
                                     <outlet property="delegate" destination="qVo-t8-ccw" id="uyb-NZ-dbN"/>
                                 </connections>
                             </tableView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="QyS-LN-7c1">
-                                <rect key="frame" x="290" y="290" width="20" height="20"/>
-                            </activityIndicatorView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mYZ-nj-lMW">
                                 <rect key="frame" x="550" y="562" width="30" height="30"/>
                                 <constraints>
@@ -222,8 +204,6 @@
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="hQw-VW-5tv" secondAttribute="trailing" id="049-Ti-I9E"/>
                             <constraint firstItem="hQw-VW-5tv" firstAttribute="top" secondItem="2Xf-Sw-rEH" secondAttribute="top" id="8Qq-4G-OZk"/>
-                            <constraint firstItem="QyS-LN-7c1" firstAttribute="centerX" secondItem="hQw-VW-5tv" secondAttribute="centerX" id="9mm-py-K9l"/>
-                            <constraint firstItem="QyS-LN-7c1" firstAttribute="centerY" secondItem="hQw-VW-5tv" secondAttribute="centerY" id="KbW-Zt-i41"/>
                             <constraint firstAttribute="trailing" secondItem="mYZ-nj-lMW" secondAttribute="trailing" constant="20" id="Zbq-rR-No5"/>
                             <constraint firstAttribute="bottom" secondItem="mYZ-nj-lMW" secondAttribute="bottom" constant="8" id="bC9-dT-UlC"/>
                             <constraint firstAttribute="bottom" secondItem="WNh-kt-xVc" secondAttribute="bottom" constant="8" id="dYS-Vg-jNn"/>
@@ -244,7 +224,6 @@
                     <navigationItem key="navigationItem" title="Event Name" id="YvU-iw-HXV"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="activitySpinner" destination="QyS-LN-7c1" id="9SJ-H1-EvX"/>
                         <outlet property="addButton" destination="mYZ-nj-lMW" id="Q2X-J8-FV0"/>
                         <outlet property="dismissButton" destination="WNh-kt-xVc" id="p5r-vH-NOQ"/>
                         <outlet property="taskTableView" destination="hQw-VW-5tv" id="ZTd-7X-PMp"/>
@@ -267,9 +246,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Task Details" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aLC-Dn-yng" userLabel="Task Notes">
+                            <textField opaque="NO" clipsSubviews="YES" alpha="0.55000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Task Details" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aLC-Dn-yng" userLabel="Task Notes">
                                 <rect key="frame" x="20" y="197" width="560" height="50"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="uk9-dc-eZg"/>
                                 </constraints>
@@ -299,7 +278,7 @@
                                     <action selector="dismiss:" destination="rD9-sy-6re" eventType="touchUpInside" id="pfM-u8-Whd"/>
                                 </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" alpha="0.25" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Task Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IcG-zR-dCF">
+                            <textField opaque="NO" clipsSubviews="YES" alpha="0.55000000000000004" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Task Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="IcG-zR-dCF">
                                 <rect key="frame" x="20" y="122" width="560" height="50"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
@@ -456,7 +435,4 @@
             <point key="canvasLocation" x="-24" y="1021"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="refresh" width="20" height="20"/>
-    </resources>
 </document>
