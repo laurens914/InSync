@@ -1,6 +1,6 @@
 //
 //  TaskViewController.swift
-//  GroupEvent
+//  InSync
 //
 //  Created by Lauren Spatz on 2/23/16.
 //  Copyright © 2016 Lauren Spatz. All rights reserved.
@@ -14,8 +14,11 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     var publicDatabase: CKDatabase?
     var ckRecord: CKRecord?
     let container = CKContainer.defaultContainer()
+    var refreshControl: UIRefreshControl!
     let checkedImage = UIImage(named: "sample-1040-checkmark")
     
+    @IBOutlet weak var addButton: UIButton!
+    @IBOutlet weak var dismissButton: UIButton!
     @IBAction func dismiss(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -34,6 +37,16 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupTable()
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.attributedTitle = NSAttributedString(string:"Loading")
+        self.refreshControl.addTarget(self, action: "refreshView:", forControlEvents: UIControlEvents.ValueChanged)
+        self.taskTableView.addSubview(refreshControl)
+    
+    }
+    func refreshView(sender:AnyObject)
+    {
+        self.updateTasks()
     }
 
     override func didReceiveMemoryWarning() {
@@ -44,18 +57,45 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
         super.viewDidAppear(animated)
         publicDatabase = container.publicCloudDatabase
         self.updateTasks()
+        self.prefersStatusBarHidden()
+        self.taskTableView.separatorColor = UIColor.clearColor()
+        self.taskButtonSetup()
+      
     }
+    
+    func setupTable()
+    {
+        self.taskTableView.estimatedRowHeight = 100
+        self.taskTableView.rowHeight = UITableViewAutomaticDimension
+    }
+    
     func updateTasks()
     {
         if let event = event {
-        Cloud.shared.getTasksWithEventId(event.recordId) { (tasks) -> () in
-            if let tasks = tasks
-            {
-                self.taskList = tasks
+            Cloud.shared.getTasksWithEventId(event.recordId) { (tasks) -> () in
+                if let tasks = tasks
+                {
+                    self.taskList = tasks
+                }
             }
         }
+        if self.refreshControl.refreshing{
+            self.refreshControl.endRefreshing()
         }
     }
+    override func prefersStatusBarHidden() -> Bool {
+        return true
+    }
+    func taskButtonSetup()
+    {
+        addButton.layer.cornerRadius = 15
+        addButton.layer.borderWidth = 1
+        addButton.layer.borderColor = UIColor.whiteColor().CGColor
+        dismissButton.layer.cornerRadius = 15
+        dismissButton.layer.borderWidth = 1
+        dismissButton.layer.borderColor = UIColor.whiteColor().CGColor
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == AddTaskViewController.id() {
             guard let addTaskViewController = segue.destinationViewController as? AddTaskViewController else {
@@ -70,12 +110,10 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
         switch taskRow.completed{
         case .notComplete:
-            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "sample-1040-checkmark"), forState: .Normal)
-            taskCell.completedButtonState.backgroundColor = UIColor.greenColor()
+            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "checkmark"), forState: .Normal)
             
         case .completed:
-            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "uncheckedBox"), forState: .Normal)
-            taskCell.completedButtonState.backgroundColor = UIColor.redColor()
+            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "box"), forState: .Normal)
         }
         
         taskCell.currentTask = taskRow
@@ -104,6 +142,16 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         }
     }
-
+        
+    func cellColor(indexPath: Int) -> UIColor
+    {
+        let cellCount = self.taskList.count-1
+        let cellCustomeColor = (CGFloat(indexPath)/CGFloat(cellCount)) * 0.7
+        return UIColor(red: 29/255, green: cellCustomeColor, blue:239/255, alpha: 0.8)
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        cell.backgroundColor = cellColor(indexPath.row)
+    }
 }
  

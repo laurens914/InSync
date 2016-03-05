@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "8921C8D51C77D6EE00D270CF"
-               BuildableName = "GroupEvent.app"
-               BlueprintName = "GroupEvent"
-               ReferencedContainer = "container:GroupEvent.xcodeproj">
+               BuildableName = "In Sync.app"
+               BlueprintName = "In Sync"
+               ReferencedContainer = "container:In Sync.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8921C8D51C77D6EE00D270CF"
-            BuildableName = "GroupEvent.app"
-            BlueprintName = "GroupEvent"
-            ReferencedContainer = "container:GroupEvent.xcodeproj">
+            BuildableName = "In Sync.app"
+            BlueprintName = "In Sync"
+            ReferencedContainer = "container:In Sync.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8921C8D51C77D6EE00D270CF"
-            BuildableName = "GroupEvent.app"
-            BlueprintName = "GroupEvent"
-            ReferencedContainer = "container:GroupEvent.xcodeproj">
+            BuildableName = "In Sync.app"
+            BlueprintName = "In Sync"
+            ReferencedContainer = "container:In Sync.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "8921C8D51C77D6EE00D270CF"
-            BuildableName = "GroupEvent.app"
-            BlueprintName = "GroupEvent"
-            ReferencedContainer = "container:GroupEvent.xcodeproj">
+            BuildableName = "In Sync.app"
+            BlueprintName = "In Sync"
+            ReferencedContainer = "container:In Sync.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
