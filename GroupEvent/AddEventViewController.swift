@@ -14,17 +14,14 @@ class AddEventViewController: UIViewController
     let container = CKContainer.defaultContainer()
     var publicDatabase: CKDatabase?
     var record: CKRecord?
-    var postedURL: NSURL?
-
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var eventDateText: UITextField!
     @IBOutlet weak var datePickerEvent: UIDatePicker!
     @IBOutlet weak var eventText: UITextField!
-    @IBAction func cancel(sender: AnyObject) {
-        
+    @IBAction func cancel(sender: AnyObject)
+    {
         self.dismissViewControllerAnimated(true, completion: nil)
-        
     }
 
     @IBAction func addEvent(sender: AnyObject) {
@@ -69,23 +66,11 @@ class AddEventViewController: UIViewController
     
     func datePickerChanged(datePickerEvent: UIDatePicker)
     {
-    let dateFormatter = NSDateFormatter()
-    
-    dateFormatter.dateStyle = NSDateFormatterStyle.LongStyle
-    
-    let strDate = dateFormatter.stringFromDate(datePickerEvent.date)
-    eventDateText.text = strDate
+        let dateFormat = NSDateFormatter()
+        dateFormat.dateStyle = NSDateFormatterStyle.LongStyle
+        let stringDate = dateFormat.stringFromDate(datePickerEvent.date)
+        eventDateText.text = stringDate
     }
-    func scrollViewDidScroll(scrollView: UIScrollView)
-    {
-        if self.eventDateText.isFirstResponder() {
-            self.eventDateText.resignFirstResponder()
-        }
-        if self.eventText.isFirstResponder(){
-            self.eventText.resignFirstResponder()
-        }
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

@@ -31,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       
         Cloud.shared.addInvitedEvent(Store.shared.ids()) { (events) -> () in
             print("success")
+            print(events)
         }
         
         return true

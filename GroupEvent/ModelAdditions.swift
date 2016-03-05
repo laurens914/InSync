@@ -29,12 +29,10 @@ class Cloud
     {
         self.container = CKContainer.defaultContainer()
         self.database = self.container.publicCloudDatabase
-        
     }
     
     func getTasksWithEventId(eventID: CKRecordID, completion:(tasks: [Task]?) -> ())
     {
-        
         let reference = CKReference(recordID: eventID, action: CKReferenceAction.DeleteSelf)
         
         let predicate = NSPredicate(format: "Event==%@", reference)
@@ -62,10 +60,9 @@ class Cloud
                         default:
                             print("This is very very bad....")
                         }
-                        
                         tasks.append(Task(taskName: assetTask, taskDate: assetDate, reference: reference, taskId: taskId, completed: completed))
-                        
                     }
+                    
                     NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                         completion (tasks: tasks)
                     })
@@ -118,7 +115,6 @@ class Cloud
                             events.append(Event(eventName: event, eventDate: date, recordId: recordId, id: id))
                             
                         }
-                        
                         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                             count--
                             if count == 0 {
