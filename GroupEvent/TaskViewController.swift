@@ -1,6 +1,6 @@
 //
 //  TaskViewController.swift
-//  GroupEvent
+//  InSync
 //
 //  Created by Lauren Spatz on 2/23/16.
 //  Copyright © 2016 Lauren Spatz. All rights reserved.
@@ -11,12 +11,10 @@ import CloudKit
 
 class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, Id
 {
-  
-   
-    @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
     var publicDatabase: CKDatabase?
     var ckRecord: CKRecord?
     let container = CKContainer.defaultContainer()
+    var refreshControl: UIRefreshControl!
     let checkedImage = UIImage(named: "sample-1040-checkmark")
     
     @IBOutlet weak var addButton: UIButton!
@@ -39,7 +37,16 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.setupTable()
+        self.refreshControl = UIRefreshControl()
+        self.refreshControl.attributedTitle = NSAttributedString(string:"Loading")
+        self.refreshControl.addTarget(self, action: "refreshView:", forControlEvents: UIControlEvents.ValueChanged)
+        self.taskTableView.addSubview(refreshControl)
     
+    }
+    func refreshView(sender:AnyObject)
+    {
+        self.updateTasks()
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,26 +62,25 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
         self.taskButtonSetup()
       
     }
-//    func setupTable()
-//    {
-//        self.taskTableView.estimatedRowHeight = 200
-//        self.taskTableView.rowHeight = UITableViewAutomaticDimension
-//    }
+    
+    func setupTable()
+    {
+        self.taskTableView.estimatedRowHeight = 100
+        self.taskTableView.rowHeight = UITableViewAutomaticDimension
+    }
     
     func updateTasks()
     {
-        let spin = activitySpinner
-        spin.hidesWhenStopped = true
-        spin.startAnimating()
-        
         if let event = event {
             Cloud.shared.getTasksWithEventId(event.recordId) { (tasks) -> () in
                 if let tasks = tasks
                 {
                     self.taskList = tasks
-                    spin.stopAnimating()
                 }
             }
+        }
+        if self.refreshControl.refreshing{
+            self.refreshControl.endRefreshing()
         }
     }
     override func prefersStatusBarHidden() -> Bool {
@@ -104,12 +110,10 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
         switch taskRow.completed{
         case .notComplete:
-            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "sample-1040-checkmark"), forState: .Normal)
-            taskCell.completedButtonState.backgroundColor = UIColor.greenColor()
+            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "checkmark"), forState: .Normal)
             
         case .completed:
-            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "uncheckedBox"), forState: .Normal)
-            taskCell.completedButtonState.backgroundColor = UIColor.redColor()
+            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "box"), forState: .Normal)
         }
         
         taskCell.currentTask = taskRow
@@ -138,27 +142,7 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
             }
         }
     }
-    
-//    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-//        let completed = UITableViewRowAction(style: .Normal, title: "Completed") { (action, indexPath) -> Void in
-//            let completedString = NSMutableAttributedString(string:self.taskList[indexPath.row].taskName)
-//            completedString.addAttribute(NSStrikethroughStyleAttributeName, value: 0, range: NSMakeRange(0, completedString.length))
-//     
-//        }
-//        let delete = UITableViewRowAction(style: .Default, title: "Delete") { (action, indexPath) -> Void in
-//            if let publicDatabase = self.publicDatabase{
-//                publicDatabase.deleteRecordWithID(self.taskList[indexPath.row].taskId, completionHandler: { (RecordID, error) -> Void in
-//                    if let error = error {
-//                        print(error)
-//                    }else { print("success")
-//                        self.updateTasks()}
-//                })
-//            }
-//        }
-//        return[delete, completed]
-//    }
-    
-    
+        
     func cellColor(indexPath: Int) -> UIColor
     {
         let cellCount = self.taskList.count-1

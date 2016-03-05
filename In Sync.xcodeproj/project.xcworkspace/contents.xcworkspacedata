@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:GroupEvent.xcodeproj">
+      location = "self:/Users/lauren/codefellows/401d3/GroupEvent/In Sync.xcodeproj">
    </FileRef>
 </Workspace>

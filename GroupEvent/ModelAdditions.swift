@@ -1,6 +1,6 @@
 //
 //  ModelAdditions.swift
-//  GroupEvent
+//  InSync
 //
 //  Created by Lauren Spatz on 2/26/16.
 //  Copyright © 2016 Lauren Spatz. All rights reserved.
@@ -29,46 +29,17 @@ class Cloud
     {
         self.container = CKContainer.defaultContainer()
         self.database = self.container.publicCloudDatabase
-        
     }
     
-    func getPosts(completion:(events: [Event]?, error: String?) -> ())
-    {
-        let query = CKQuery(recordType: "Event", predicate: NSPredicate(value: true))
-        self.database.performQuery(query, inZoneWithID: nil) { (records, error) -> Void in
-            
-            if error == nil {
-                if let records = records {
-                    var events = [Event]()
-                    for record in records {
-                        guard let event = record["Event"] as? String else {return}
-                        guard let date = record["Date"] as? String else {return}
-                        guard let recordId = record["recordID"] as? CKRecordID else {return}
-                        guard let id = record["Id"] as? String else {return}
-                        events.append(Event(eventName: event, eventDate: date, recordId: recordId, id: id))
-                        
-                    }
-                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                        completion (events: events, error: nil)
-                    })
-                }
-            } else {
-                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                    completion(events: nil, error: error?.localizedDescription)
-                })               
-            }
-        }
-    }
     func getTasksWithEventId(eventID: CKRecordID, completion:(tasks: [Task]?) -> ())
     {
-        
         let reference = CKReference(recordID: eventID, action: CKReferenceAction.DeleteSelf)
         
         let predicate = NSPredicate(format: "Event==%@", reference)
         
         let query = CKQuery(recordType: "Task", predicate: predicate)
         self.database.performQuery(query, inZoneWithID: nil) { (records, error) -> Void in
-
+            
             if error == nil {
                 if let records = records {
                     var tasks = [Task]()
@@ -89,10 +60,9 @@ class Cloud
                         default:
                             print("This is very very bad....")
                         }
-                        
                         tasks.append(Task(taskName: assetTask, taskDate: assetDate, reference: reference, taskId: taskId, completed: completed))
-                        
                     }
+                    
                     NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                         completion (tasks: tasks)
                     })
@@ -113,8 +83,6 @@ class Cloud
             }
             self.database.saveRecord(record, completionHandler: { (record, error) -> Void in
                 if let error = error {print(error); completion(success: false)}
-                guard let record = record else {completion(success: false); return}
-                
                 NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                     completion(success: true)
                 })
@@ -123,43 +91,50 @@ class Cloud
         
     }
     
-    func addInvitedEvent(recordId: String, completion:(events: [Event]?) -> ())
+    func addInvitedEvent(recordId:Set<String>, completion:(events: [Event]?, error:String?) -> ())
     {
-        let predicate = NSPredicate(format: "Id == %@", recordId)
-        let query = CKQuery(recordType: "Event", predicate: predicate)
-        self.database.performQuery(query, inZoneWithID: nil) { (records, error) -> Void in
+        if recordId.count == 0 { completion(events: nil , error:nil) }
+        
+        var events = [Event]()
+        var count = recordId.count
+        
+        for id in recordId {
+            let predicate = NSPredicate(format: "Id == %@", id)
+            let query = CKQuery(recordType: "Event", predicate: predicate)
             
-            if error == nil {
-                if let records = records {
-                    var events = [Event]()
-                    for record in records {
-                        guard let event = record["Event"] as? String else {return}
-                        guard let date = record["Date"] as? String else {return}
-                        guard let recordId = record["recordID"] as? CKRecordID else {return}
-                        guard let id = record["Id"] as? String else {return}
-                        events.append(Event(eventName: event, eventDate: date, recordId: recordId, id: id))
+            self.database.performQuery(query, inZoneWithID: nil) { (records, error) -> Void in
+                
+                if error == nil {
+                    if let records = records {
+                        
+                        for record in records {
+                            guard let event = record["Event"] as? String else {return}
+                            guard let date = record["Date"] as? String else {return}
+                            guard let recordId = record["recordID"] as? CKRecordID else {return}
+                            guard let id = record["Id"] as? String else {return}
+                            events.append(Event(eventName: event, eventDate: date, recordId: recordId, id: id))
+                            
+                        }
+                        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                            count--
+                            if count == 0 {
+                                completion (events: events, error:nil)
+                            }
+                        })
                         
                     }
+                }  else {
                     NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                        
-                        for event in events {
-                            print(event.eventDate)
-                            print(event.id)
-                        }
-                        
-                        completion (events: events)
+                        completion(events: nil, error: error?.localizedDescription)
                     })
                 }
-            } else {
-                print(error)
+                
             }
         }
         
         
+        
     }
-    
-    
-    
 }
 
 

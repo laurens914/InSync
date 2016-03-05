@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  GroupEvent
+//  InSync
 //
 //  Created by Lauren Spatz on 2/19/16.
 //  Copyright © 2016 Lauren Spatz. All rights reserved.
@@ -24,10 +24,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, handleOpenURL url: NSURL) -> Bool {
         publicDatabase = container.publicCloudDatabase
         let urlString = String(url)
-        let recordNameId = urlString.componentsSeparatedByString("=")
-        let recordName = recordNameId[1]
-        Cloud.shared.addInvitedEvent(recordName) { (events) -> () in
+        let components = urlString.componentsSeparatedByString("=")
+        if let id = components.last  {
+            Store.shared.addId(id)
+        }
+      
+        Cloud.shared.addInvitedEvent(Store.shared.ids()) { (events) -> () in
             print("success")
+            print(events)
         }
         
         return true
