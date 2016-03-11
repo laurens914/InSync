@@ -19,11 +19,11 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var dismissButton: UIButton!
-    @IBAction func dismiss(sender: AnyObject) {
+    @IBAction func dismissButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     @IBOutlet weak var taskTableView: UITableView!
-
+    @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
     static func id() -> String
     {
         return "TaskViewController"
@@ -32,21 +32,16 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
   
     var taskList = [Task](){
         didSet{
+            self.taskList.sortInPlace { (taskOne, taskTwo) -> Bool in
+                return taskOne.taskName.compare(taskTwo.taskName, options:.CaseInsensitiveSearch, range: nil, locale: nil) == .OrderedAscending
+            }
             self.taskTableView.reloadData()
+            activitySpinner.stopAnimating()
         }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupTable()
-        self.refreshControl = UIRefreshControl()
-        self.refreshControl.attributedTitle = NSAttributedString(string:"Loading")
-        self.refreshControl.addTarget(self, action: "refreshView:", forControlEvents: UIControlEvents.ValueChanged)
-        self.taskTableView.addSubview(refreshControl)
-    
-    }
-    func refreshView(sender:AnyObject)
-    {
-        self.updateTasks()
     }
 
     override func didReceiveMemoryWarning() {
@@ -55,6 +50,8 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
+        activitySpinner.startAnimating()
+        activitySpinner.hidesWhenStopped = true
         publicDatabase = container.publicCloudDatabase
         self.updateTasks()
         self.prefersStatusBarHidden()
@@ -79,9 +76,6 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 }
             }
         }
-        if self.refreshControl.refreshing{
-            self.refreshControl.endRefreshing()
-        }
     }
     override func prefersStatusBarHidden() -> Bool {
         return true
@@ -101,6 +95,16 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
             guard let addTaskViewController = segue.destinationViewController as? AddTaskViewController else {
                 fatalError("oops...") }
             addTaskViewController.event = self.event
+            addTaskViewController.dismiss = {
+                self.dismissViewControllerAnimated(true, completion: nil)
+                if let record = addTaskViewController.record {
+                self.taskList.append(Task(
+                taskName:record.objectForKey("Task") as! String,
+                taskDate:record.objectForKey("Date") as? String,
+                reference: record.objectForKey("Event") as! CKReference,
+                    taskId:record.objectForKey("recordID") as! CKRecordID, completed:isCompleted.notComplete))
+             }
+            }
         }
     }
     
@@ -129,14 +133,17 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
+            let currentTaskRecord = self.taskList[indexPath.row].taskId
+            self.taskList.removeAtIndex(indexPath.row)
+            self.taskTableView.reloadData()
             if let publicDatabase = publicDatabase{
-                publicDatabase.deleteRecordWithID(taskList[indexPath.row].taskId, completionHandler: { (RecordID, error) -> Void in
+                publicDatabase.deleteRecordWithID(currentTaskRecord, completionHandler: { (RecordID, error) -> Void in
                     if let error = error {
-                        print(error)
+                        print(error.localizedDescription)
+                        self.updateTasks()
                     }else
                     {
                     print("success")
-                    self.updateTasks()
                     }
                 })
             }

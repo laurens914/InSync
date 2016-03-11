@@ -14,6 +14,8 @@ class AddEventViewController: UIViewController
     let container = CKContainer.defaultContainer()
     var publicDatabase: CKDatabase?
     var record: CKRecord?
+    var event: Event?
+    var dismiss:(()->())?
     @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var eventDateText: UITextField!
@@ -23,6 +25,10 @@ class AddEventViewController: UIViewController
     {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+    static func id()-> String
+    {
+        return "AddEventViewController"
+    }
 
     @IBAction func addEvent(sender: AnyObject) {
         let id = NSUUID().UUIDString
@@ -30,7 +36,7 @@ class AddEventViewController: UIViewController
             let myRecord = CKRecord(recordType: "Event")
             myRecord.setObject(eventText.text, forKey: "Event")
             myRecord.setObject(eventDateText.text, forKey: "Date")
-            myRecord.setObject(id, forKey: "Id")
+           myRecord.setObject(id, forKey: "Id")
             myRecord.setObject(eventText.text, forKey: "Name")
             
             if let  publicDatabase = publicDatabase{
@@ -39,11 +45,11 @@ class AddEventViewController: UIViewController
                         if let error = error {
                             print(error)
                         } else {
-                            NSOperationQueue().addOperationWithBlock{ () -> Void in
+                            NSOperationQueue.mainQueue().addOperationWithBlock{ () -> Void in
+                                self.record = myRecord
+                                print(myRecord.objectForKey("Event"))
+                                self.dismiss?()
                             }
-                            self.dismissViewControllerAnimated(true, completion: nil)
-                            self.record = myRecord
-                            
                         }
                     }))
             }
@@ -57,7 +63,9 @@ class AddEventViewController: UIViewController
         self.datePickerEvent.addTarget(self, action: Selector("datePickerChanged:"), forControlEvents: UIControlEvents.ValueChanged)
         self.datePickerEvent.setValue(UIColor.whiteColor(), forKeyPath: "textColor")
       
-        
+        let bgColor = CAGradientLayer().gradientBackground()
+        bgColor.frame = self.view.bounds
+        self.view.layer.insertSublayer(bgColor, atIndex: 0)
     }
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
                 eventText.endEditing(true)
@@ -74,13 +82,15 @@ class AddEventViewController: UIViewController
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        let bgColor = CAGradientLayer().gradientBackground()
-        bgColor.frame = self.view.bounds
-        self.view.layer.insertSublayer(bgColor, atIndex: 0)
         self.buttonSetup()
-
     }
 
     func buttonSetup()

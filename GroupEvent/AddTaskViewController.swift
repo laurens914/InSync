@@ -17,46 +17,51 @@ class AddTaskViewController: UIViewController
     var record: CKRecord?
     var reference: CKReference?
     var event: Event?
-    
+    var dismiss:(()->())?
+    let bgColor = CAGradientLayer().gradientBackground()
+
    static func id() -> String
     {
        return "AddTaskViewController"
     }
     
-    @IBAction func dismiss(sender: AnyObject) {
+    @IBAction func exitPage(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
+
     @IBAction func addTask(sender: AnyObject) {
       
         let myRecord = CKRecord(recordType: "Task")
         myRecord.setObject(taskText.text, forKey: "Task")
         myRecord.setObject(taskNotes.text, forKey: "Date")
         myRecord.setObject(CKReference(recordID: (event?.recordId)!,action: CKReferenceAction.DeleteSelf), forKey: "Event")
-        myRecord.setObject(isCompleted.notComplete.hashValue, forKey: "IsCompleted")
+        myRecord.setObject(isCompleted.notComplete.rawValue, forKey: "IsCompleted")
         
         if let  publicDatabase = publicDatabase{
             publicDatabase.saveRecord(myRecord, completionHandler:
                 ({returnRecord, error in
                     if let error  = error {
-                        print(error)
+                        print(error.localizedDescription)
                     } else {
-                        NSOperationQueue().addOperationWithBlock{ () -> Void in }
-                        self.dismissViewControllerAnimated(true, completion: nil)
-                        self.record = myRecord
+                        NSOperationQueue.mainQueue().addOperationWithBlock{ () -> Void in
+                            self.record = myRecord
+                            print(self.record)
+                            self.dismiss?()
+                        }
+                     
                     }
                 }))
         }
     }
     @IBOutlet weak var taskText: UITextField!
     @IBOutlet weak var taskNotes: UITextField!
-    @IBOutlet weak var dismiss: UIButton!
+    @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var add: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        publicDatabase = container.publicCloudDatabase
-        let bgColor = CAGradientLayer().gradientBackground()
         bgColor.frame = self.view.bounds
+        publicDatabase = container.publicCloudDatabase
         self.view.layer.insertSublayer(bgColor, atIndex: 0)
     }
     override func viewDidAppear(animated: Bool) {
@@ -76,9 +81,9 @@ class AddTaskViewController: UIViewController
         add.layer.cornerRadius = 15
         add.layer.borderWidth = 1
         add.layer.borderColor = UIColor.whiteColor().CGColor
-        dismiss.layer.cornerRadius = 15
-        dismiss.layer.borderWidth = 1
-        dismiss.layer.borderColor = UIColor.whiteColor().CGColor
+        dismissButton.layer.cornerRadius = 15
+        dismissButton.layer.borderWidth = 1
+        dismissButton.layer.borderColor = UIColor.whiteColor().CGColor
     }
 }
 

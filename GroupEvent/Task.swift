@@ -13,13 +13,13 @@ import CloudKit
 class Task
 {
     var taskName: String
-    var taskDate: String
+    var taskDate: String?
     var event: Event?
     var reference: CKReference
     var taskId: CKRecordID
     var completed: isCompleted
     
-    init(taskName: String, taskDate: String, event: Event? = nil, reference: CKReference, taskId: CKRecordID, completed: isCompleted)
+    init(taskName: String, taskDate: String? = nil , event: Event? = nil, reference: CKReference, taskId: CKRecordID, completed: isCompleted)
     {
         self.taskName = taskName
         self.taskDate = taskDate

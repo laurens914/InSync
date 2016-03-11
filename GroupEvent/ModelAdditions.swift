@@ -12,9 +12,9 @@ import CloudKit
 
 typealias CloudCompletion = (success: Bool) -> ()
 
-enum isCompleted{
-    case notComplete
-    case completed
+enum isCompleted: Int{
+    case notComplete = 0
+    case completed = 1
 }
 
 class Cloud
@@ -91,51 +91,46 @@ class Cloud
         
     }
     
+    //    func addInvitedEvent(recordId:Set<String>, completion:(events: [Event]?, error:String?) -> ())
+    //    {
+    //        if recordId.count == 0 { completion(events: nil , error:nil) }
+    //
+    //        var queries = recordId.map { CKQuery(recordType: "Event", predicate: NSPredicate(format: "Id == %@", $0)) }
+    //
+    //        for query in queries {
+    //            //
+    //        }
+    //    }
+    
     func addInvitedEvent(recordId:Set<String>, completion:(events: [Event]?, error:String?) -> ())
     {
         if recordId.count == 0 { completion(events: nil , error:nil) }
         
-        var events = [Event]()
-        var count = recordId.count
+        var events = [Event]()        
+        let predicate = NSPredicate(format: "Id IN %@", recordId)
+        let query = CKQuery(recordType: "Event", predicate: predicate)
         
-        for id in recordId {
-            let predicate = NSPredicate(format: "Id == %@", id)
-            let query = CKQuery(recordType: "Event", predicate: predicate)
+        self.database.performQuery(query, inZoneWithID: nil) { (records, error) -> Void in
             
-            self.database.performQuery(query, inZoneWithID: nil) { (records, error) -> Void in
-                
-                if error == nil {
-                    if let records = records {
-                        
-                        for record in records {
-                            guard let event = record["Event"] as? String else {return}
-                            guard let date = record["Date"] as? String else {return}
-                            guard let recordId = record["recordID"] as? CKRecordID else {return}
-                            guard let id = record["Id"] as? String else {return}
-                            events.append(Event(eventName: event, eventDate: date, recordId: recordId, id: id))
-                            
-                        }
-                        NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                            count--
-                            if count == 0 {
-                                completion (events: events, error:nil)
-                            }
-                        })
-                        
-                    }
-                }  else {
-                    NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
-                        completion(events: nil, error: error?.localizedDescription)
-                    })
+            if let records = records {
+                for record in records {
+                    guard let event = record["Event"] as? String else {return}
+                    guard let date = record["Date"] as? String else {return}
+                    guard let recordId = record["recordID"] as? CKRecordID else {return}
+                    guard let id = record["Id"] as? String else {return}
+                    events.append(Event(eventName: event, eventDate: date, recordId: recordId, id: id))
                 }
                 
+                NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                    completion(events: events, error: nil)
+                })
             }
         }
-        
-        
-        
     }
+    
+    
 }
+
 
 
 

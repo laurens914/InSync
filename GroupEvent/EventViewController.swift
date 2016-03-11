@@ -14,13 +14,13 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
     var event: Event?
     var selectedItem: Event?
     var publicDatabase: CKDatabase?
     var ckRecord: CKRecord?
     let container = CKContainer.defaultContainer()
-    var refreshControl: UIRefreshControl!
-    let myRecord = CKRecord(recordType: "Event")
+//    var refreshControl: UIRefreshControl!
 
     @IBOutlet weak var addButton: UIButton!
 
@@ -28,41 +28,29 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     var eventList = [Event]()
         {
         didSet{
-            self.tableView.reloadData()
+            self.eventList.sortInPlace { (eventOne, eventTwo) -> Bool in
+                return eventOne.eventName.compare(eventTwo.eventName, options:.CaseInsensitiveSearch, range: nil, locale: nil) == .OrderedAscending 
+            }
+            print(eventList.count)
+            activitySpinner.stopAnimating()
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.refreshControl = UIRefreshControl()
-        self.refreshControl.attributedTitle = NSAttributedString(string:"Loading")
-        self.refreshControl.addTarget(self, action: "refreshView:", forControlEvents: UIControlEvents.ValueChanged)
-        self.tableView.addSubview(refreshControl)
-        self.refreshControl.backgroundColor = UIColor(red: 29/255, green: 89/255, blue:239/255, alpha: 0.9)
-        let ids = Store.shared.ids()
-        print(ids.count)
-        
-        Cloud.shared.addInvitedEvent(ids) { (events, error) -> () in
-            guard let events = events else { return }
-            for event in events {
-                print(event.eventName)
-            }
-        }
+        activitySpinner.startAnimating()
+        activitySpinner.hidesWhenStopped = true
+        self.update()
     }
 
-    func refreshView(sender:AnyObject)
-    {
-       self.update()
-    }
+
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        self.update()
         publicDatabase = container.publicCloudDatabase
         self.tableView.separatorColor = UIColor.clearColor()
         self.navigationController?.navigationBarHidden = true
         self.prefersStatusBarHidden()
-        self.update()
         self.addButtonSetup()
     }
     
@@ -83,22 +71,33 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func update()
     {
-        Cloud.shared.addInvitedEvent(Store.shared.ids()) { (events, error) -> () in
-            if let posts = events {
-                self.eventList = posts
+//        NSOperationQueue().addOperationWithBlock { () -> Void in
+            Cloud.shared.addInvitedEvent(Store.shared.ids()) { (events, error) -> () in
+                if let posts = events {
+                    self.eventList = posts
+                    self.tableView.reloadData()
+                }
+                if let error = error {
+                    print(error)
+                    self.displayAlertView()
+                }
             }
-            if let error = error {
-                print(error)
-                self.displayAlertView()
-            }
-        }
-        if self.refreshControl.refreshing{
-            self.refreshControl.endRefreshing()
-        }
-        
+
+//        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == AddEventViewController.id() {
+            guard let addEventViewController = segue.destinationViewController as? AddEventViewController else {
+                fatalError("oops...") }
+            addEventViewController.event = self.event
+            addEventViewController.dismiss = {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            
+            self.eventList.append(Event(eventName: addEventViewController.record?.objectForKey("Name") as! String, eventDate: addEventViewController.record?.objectForKey("Date") as! String, recordId: addEventViewController.record?.objectForKey("recordID") as! CKRecordID))
+            print(addEventViewController.record?.objectForKey("Event"))
+            }
+        }
         if segue.identifier == TaskViewController.id() {
             guard let taskViewController = segue.destinationViewController as? TaskViewController else {
                 fatalError("oops...") }
@@ -136,18 +135,22 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
                 self.presentViewController(activityVC, animated: true, completion: nil)
         }
         let delete = UITableViewRowAction(style: .Default, title: "Delete") { (action, indexPath) -> Void in
+            let currentRecordId = self.eventList[indexPath.row].recordId
+            self.eventList.removeAtIndex(indexPath.row)
+            self.tableView.reloadData() 
             if let publicDatabase = self.publicDatabase{
-                publicDatabase.deleteRecordWithID(self.eventList[indexPath.row].recordId, completionHandler: { (RecordID, error) -> Void in
+                publicDatabase.deleteRecordWithID(currentRecordId, completionHandler: { (RecordID, error) -> Void in
                     if let error = error {
                         print(error)
-                    }else { print("success")
-                        self.update()}
+                        self.update()
+                    }else {
+                            print("success")
+                       }
                 })
             }
         }
         return[delete, share]
     }
-    
     func cellColor(indexPath: Int) -> UIColor
     {
         let cellCount = self.eventList.count-1
