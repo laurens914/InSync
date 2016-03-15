@@ -32,6 +32,7 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
                 return eventOne.eventName.compare(eventTwo.eventName, options:.CaseInsensitiveSearch, range: nil, locale: nil) == .OrderedAscending 
             }
             print(eventList.count)
+            self.tableView.reloadData()
             activitySpinner.stopAnimating()
         }
     }
@@ -71,7 +72,6 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     func update()
     {
-//        NSOperationQueue().addOperationWithBlock { () -> Void in
             Cloud.shared.addInvitedEvent(Store.shared.ids()) { (events, error) -> () in
                 if let posts = events {
                     self.eventList = posts
@@ -142,6 +142,9 @@ class EventViewController: UIViewController, UITableViewDataSource, UITableViewD
                 publicDatabase.deleteRecordWithID(currentRecordId, completionHandler: { (RecordID, error) -> Void in
                     if let error = error {
                         print(error)
+                        let errorAlertController = UIAlertController(title: "Error", message: "please try again", preferredStyle: .Alert)
+                        errorAlertController.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
+                        self.presentViewController(errorAlertController, animated: true, completion: nil)
                         self.update()
                     }else {
                             print("success")

@@ -307,22 +307,28 @@
                                     <action selector="exitPage:" destination="rD9-sy-6re" eventType="touchUpInside" id="YBa-9a-fqe"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="69v-Az-lSc">
+                                <rect key="frame" x="290" y="290" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="aLC-Dn-yng" firstAttribute="leading" secondItem="JIc-yI-kiB" secondAttribute="leading" constant="20" id="378-tn-g40"/>
                             <constraint firstItem="IcG-zR-dCF" firstAttribute="top" secondItem="MOI-oT-ZkE" secondAttribute="bottom" constant="102" id="3Pg-di-juc"/>
                             <constraint firstItem="9xN-ow-CRz" firstAttribute="leading" secondItem="JIc-yI-kiB" secondAttribute="leading" constant="20" id="Ars-HZ-77S"/>
+                            <constraint firstItem="69v-Az-lSc" firstAttribute="centerY" secondItem="JIc-yI-kiB" secondAttribute="centerY" id="FXy-J5-da3"/>
                             <constraint firstItem="ov0-yH-AU9" firstAttribute="top" secondItem="mmw-er-SHM" secondAttribute="bottom" constant="8" id="OjK-TS-yiy"/>
                             <constraint firstAttribute="trailing" secondItem="mmw-er-SHM" secondAttribute="trailing" constant="20" id="SeS-Ud-PC6"/>
                             <constraint firstItem="ov0-yH-AU9" firstAttribute="top" secondItem="9xN-ow-CRz" secondAttribute="bottom" constant="8" id="VG6-KC-SdW"/>
                             <constraint firstAttribute="trailing" secondItem="IcG-zR-dCF" secondAttribute="trailing" constant="20" id="cOA-sa-dW1"/>
+                            <constraint firstItem="69v-Az-lSc" firstAttribute="centerX" secondItem="JIc-yI-kiB" secondAttribute="centerX" id="kN7-RZ-CnW"/>
                             <constraint firstAttribute="trailing" secondItem="aLC-Dn-yng" secondAttribute="trailing" constant="20" id="ner-9w-sjc"/>
                             <constraint firstItem="aLC-Dn-yng" firstAttribute="top" secondItem="IcG-zR-dCF" secondAttribute="bottom" constant="25" id="oQS-Nn-17i"/>
                             <constraint firstItem="IcG-zR-dCF" firstAttribute="leading" secondItem="JIc-yI-kiB" secondAttribute="leading" constant="20" id="xEF-s7-WNd"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activitySpinner" destination="69v-Az-lSc" id="sya-xK-2Rc"/>
                         <outlet property="add" destination="mmw-er-SHM" id="MA8-NS-uh0"/>
                         <outlet property="dismissButton" destination="9xN-ow-CRz" id="pJN-Kk-kle"/>
                         <outlet property="taskNotes" destination="aLC-Dn-yng" id="Mdf-qL-wxx"/>

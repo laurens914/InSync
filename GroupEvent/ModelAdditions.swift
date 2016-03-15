@@ -53,9 +53,9 @@ class Cloud
                         var completed : isCompleted!
                         
                         switch completedInt{
-                        case 0:
-                            completed = isCompleted.completed
                         case 1:
+                            completed = isCompleted.completed
+                        case 0:
                             completed = isCompleted.notComplete
                         default:
                             print("This is very very bad....")

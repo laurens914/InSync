@@ -41,6 +41,9 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.updateTasks()
+        activitySpinner.startAnimating()
+        activitySpinner.hidesWhenStopped = true
         self.setupTable()
     }
 
@@ -50,10 +53,8 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        activitySpinner.startAnimating()
-        activitySpinner.hidesWhenStopped = true
+       
         publicDatabase = container.publicCloudDatabase
-        self.updateTasks()
         self.prefersStatusBarHidden()
         self.taskTableView.separatorColor = UIColor.clearColor()
         self.taskButtonSetup()
@@ -114,10 +115,10 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
         switch taskRow.completed{
         case .notComplete:
-            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "checkmark"), forState: .Normal)
+            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "box"), forState: .Normal)
             
         case .completed:
-            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "box"), forState: .Normal)
+            taskCell.completedButtonState.setBackgroundImage(UIImage(named: "checkmark"), forState: .Normal)
         }
         
         taskCell.currentTask = taskRow
@@ -140,6 +141,9 @@ class TaskViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 publicDatabase.deleteRecordWithID(currentTaskRecord, completionHandler: { (RecordID, error) -> Void in
                     if let error = error {
                         print(error.localizedDescription)
+                        let errorAlertController = UIAlertController(title: "Error", message: "please try again", preferredStyle: .Alert)
+                        errorAlertController.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
+                        self.presentViewController(errorAlertController, animated: true, completion: nil)
                         self.updateTasks()
                     }else
                     {

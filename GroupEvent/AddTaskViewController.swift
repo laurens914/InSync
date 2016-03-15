@@ -30,7 +30,7 @@ class AddTaskViewController: UIViewController
     }
 
     @IBAction func addTask(sender: AnyObject) {
-      
+        activitySpinner.startAnimating()
         let myRecord = CKRecord(recordType: "Task")
         myRecord.setObject(taskText.text, forKey: "Task")
         myRecord.setObject(taskNotes.text, forKey: "Date")
@@ -57,9 +57,12 @@ class AddTaskViewController: UIViewController
     @IBOutlet weak var taskNotes: UITextField!
     @IBOutlet weak var dismissButton: UIButton!
     @IBOutlet weak var add: UIButton!
+    @IBOutlet weak var activitySpinner: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        activitySpinner.hidesWhenStopped = true
+        activitySpinner.stopAnimating()
         bgColor.frame = self.view.bounds
         publicDatabase = container.publicCloudDatabase
         self.view.layer.insertSublayer(bgColor, atIndex: 0)
