@@ -42,20 +42,47 @@ class AddEventViewController: UIViewController
             if let  publicDatabase = publicDatabase{
                 publicDatabase.saveRecord(myRecord, completionHandler:
                     ({returnRecord, error in
+                    NSOperationQueue.mainQueue().addOperationWithBlock{ () -> Void in
                         if let error = error {
                             print(error)
-                        } else {
+                            self.displayiCloudAlertView()
+                        }
+                        else {
                             NSOperationQueue.mainQueue().addOperationWithBlock{ () -> Void in
                                 self.record = myRecord
                                 print(myRecord.objectForKey("Event"))
                                 self.dismiss?()
                             }
                         }
-                    }))
+                    }
+                }))
+            } else {
+                displayDatabaseAlert()
             }
             
         }
         
+    }
+    
+    func displayiCloudAlertView()
+    {
+        let alertController = UIAlertController(title: "No iCloud Account Found", message: "please sign into your account", preferredStyle: .Alert)
+        let settingsAlert = UIAlertAction(title: "Settings", style: .Default) { (alertAction) -> Void in
+            if let appSettings = NSURL(string:UIApplicationOpenSettingsURLString){
+                UIApplication.sharedApplication().openURL(appSettings)
+            }
+        }
+        alertController.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
+        alertController.addAction(settingsAlert)
+        self.presentViewController(alertController, animated: true, completion: nil)
+        return
+    }
+    func displayDatabaseAlert()
+    {
+        let alertController = UIAlertController(title: "iCloud Database Unavailable", message: "please try agiain", preferredStyle: .Alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: .Cancel, handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
+        return
     }
     override func viewDidLoad() {
         super.viewDidLoad()
